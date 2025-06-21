@@ -1,3 +1,4 @@
+import { gameController } from './engine/Controllers/gameController';
 import { Game } from './engine/game';
 import { GameRenderer } from './engine/gameRenderer';
 
@@ -12,6 +13,7 @@ async function main() {
   const game = new Game();
   const renderer = new GameRenderer(game);
   await renderer.init();
+  const controller = new gameController(renderer);
 }
 
 bootstrapStyle();
