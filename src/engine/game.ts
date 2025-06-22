@@ -73,4 +73,11 @@ export class Game {
       }
     }
   }
+
+  public playCardFromHand(card: Card) {
+    const index = this.hand.indexOf(card);
+    if (index !== -1) {
+        this.hand.splice(index, 1);
+    }
+  }
 }

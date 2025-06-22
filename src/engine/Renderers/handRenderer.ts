@@ -25,11 +25,17 @@ export class handRenderer {
         this.renderFallbackHand()
     }
 
-    public renderHand() {
+    public render() {
+        this.handContainer.children.forEach(child => {
+            if (child instanceof PIXI.Text) {
+                child.removeAllListeners();
+            }
+        });
         this.handContainer.removeChildren();
+
         this.game.hand.forEach((card, index) => {
-        const cardSprite = this.createCardSprite(card, index);
-        this.handContainer.addChild(cardSprite);
+            const cardSprite = this.createCardSprite(card, index);
+            this.handContainer.addChild(cardSprite);
         });
     }
 
@@ -59,10 +65,17 @@ export class handRenderer {
 
     
     public renderFallbackHand() {
+        this.handContainer.children.forEach(child => {
+            if (child instanceof PIXI.Text) {
+                child.removeAllListeners();
+            }
+        });
         this.handContainer.removeChildren();
+
         this.game.hand.forEach((card, index) => {
             const cardText = this.createCardSpriteFallback(card, index);
-            this.handContainer.addChild(cardText);
+            this.handleCardEvents(card, cardText, index); // Posiciona e configura antes
+            this.handContainer.addChild(cardText);        // Só adiciona depois
         });
     }
 
@@ -79,8 +92,6 @@ export class handRenderer {
             text: symbol,
             style: cardTextStyle,
         });
-
-       this.handleCardEvents(card, cardText, index)
 
         return cardText;
     }
@@ -109,7 +120,9 @@ export class handRenderer {
         });
 
         cardText.on('pointerdown', () => {
-            this.onCardSelected!(card)
+            if (this.onCardSelected) {
+                this.onCardSelected(card);
+            }
         })
     }
     
