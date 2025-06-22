@@ -22,35 +22,37 @@ export class gameController {
 
     private selectEnemyCard(card: Card) {
         this.selectedEnemyCard = card;
+        this.tryPerformAction();
     }
 
     private tryPerformAction() {
-
         this.renderer.userInterface.updateRound();
 
         if (this.selectedPlayerCard!.type == "gold") {
-            this.playCard(this.selectedPlayerCard!)
+            this.discardCard(this.selectedPlayerCard!)
             this.renderer.userInterface.updateGold();
         }
 
         if (this.selectedPlayerCard?.type == "weapon" && this.selectedEnemyCard) {
-            //this.renderer.userInterface.updateLife(9);
-            // Aqui você executa o efeito do jogo real.
-            // Exemplo: remove o inimigo se for arma, reduz valor, cura, etc.
-            
-
-            // Depois de agir:
-            
+            if (this.selectedPlayerCard.value > this.selectedEnemyCard.value) {
+                this.discardCard(this.selectedEnemyCard)
+            }
+            else {
+                this.discardCard(this.selectedPlayerCard)
+                this.renderer.userInterface.updateLife(this.selectedEnemyCard.value - this.selectedPlayerCard.value);
+            }
 
             this.renderer.hand.refresh();
             this.renderer.table.refresh();
+
+            this.selectedPlayerCard = null;
+            this.selectedEnemyCard = null;
         }
 
-        this.selectedPlayerCard = null;
-        this.selectedEnemyCard = null;
+        
     }
 
-    private playCard(card: Card) {
+    private discardCard(card: Card) {
         this.game.playCardFromHand(card);
         this.renderer.hand.refresh();
     }

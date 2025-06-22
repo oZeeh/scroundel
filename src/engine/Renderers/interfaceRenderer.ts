@@ -8,17 +8,15 @@ type uiStyleType = {
 }
 
 export class uiRenderer {
-    game: Game;
-    app: PIXI.Application;
-    interfaceContainer: PIXI.Container;
-
-    life: number = 10
-    round: number = 0
-    gold: number = 0
-
-    lifeText!: PIXI.Text;
-    roundText!: PIXI.Text;
-    goldText!: PIXI.Text;
+    private game: Game;
+    private app: PIXI.Application;
+    private interfaceContainer: PIXI.Container;
+    private life: number = 10
+    private round: number = 0
+    private gold: number = 0
+    private lifeText!: PIXI.Text;
+    private roundText!: PIXI.Text;
+    private goldText!: PIXI.Text;
 
     textStyle: uiStyleType = this.uiTextStyle();
 

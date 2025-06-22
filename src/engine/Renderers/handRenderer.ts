@@ -5,9 +5,9 @@ import { Text } from 'pixi.js';
 import * as PIXI from 'pixi.js';
 
 export class handRenderer {
-    game: Game;
-    app: PIXI.Application;
-    handContainer: PIXI.Container;
+    private game: Game;
+    private app: PIXI.Application;
+    private handContainer: PIXI.Container;
 
     onCardSelected: ((card: Card) => void) | null = null;
 

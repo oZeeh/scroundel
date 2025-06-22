@@ -8,17 +8,16 @@ import { uiRenderer } from './Renderers/interfaceRenderer';
 export class GameRenderer {
   game: Game;
 
-  app: PIXI.Application;
-  handContainer: PIXI.Container;
-  tableContainer: PIXI.Container;
-  userIntefaceContainer: PIXI.Container;
+  private app: PIXI.Application;
+  private handContainer: PIXI.Container;
+  private tableContainer: PIXI.Container;
+  private userIntefaceContainer: PIXI.Container;
+  private shouldUseFallBackSpriteRender: boolean = false;
 
-  table: tableRenderer;
-  hand: handRenderer;
-  deck: deckRenderer;
-  userInterface: uiRenderer;
-
-  shouldUseFallBackSpriteRender: boolean = false;
+  public table: tableRenderer;
+  public hand: handRenderer;
+  public deck: deckRenderer;
+  public userInterface: uiRenderer;
 
   constructor(game: Game) {
     this.game = game;
