@@ -33,7 +33,7 @@ export class Card {
       case 'health':
         return '#81171B';
       case 'gold':
-        return '#E9EB87';
+        return '#F5BB00';
       case 'shield':
         return '#B9F18C';
       default:

@@ -6,25 +6,35 @@ import { Text } from 'pixi.js';
 import { tableRenderer } from './Renderers/tableRenderer';
 import { handRenderer } from './Renderers/handRenderer';
 import { deckRenderer } from './Renderers/deckRenderer';
+import { uiRenderer } from './Renderers/interfaceRenderer';
 
 export class GameRenderer {
   game: Game;
+
   app: PIXI.Application;
   handContainer: PIXI.Container;
   tableContainer: PIXI.Container;
-  shouldUseFallBackSpriteRender: boolean = false;
+  userIntefaceContainer: PIXI.Container;
+
   table: tableRenderer;
   hand: handRenderer;
   deck: deckRenderer;
+  userInterface: uiRenderer;
+
+  shouldUseFallBackSpriteRender: boolean = false;
 
   constructor(game: Game) {
     this.game = game;
+
     this.app = new PIXI.Application();
     this.handContainer = new PIXI.Container();
     this.tableContainer = new PIXI.Container();
+    this.userIntefaceContainer = new PIXI.Container();
+
     this.table = new tableRenderer(this.game, this.app, this.tableContainer)
     this.hand = new handRenderer(this.game, this.app, this.handContainer)
     this.deck = new deckRenderer(this.hand)
+    this.userInterface = new uiRenderer(this.game, this.app, this.userIntefaceContainer)
   }
 
   public async init() {
@@ -52,6 +62,7 @@ export class GameRenderer {
       this.app.renderer.resize(window.innerWidth, window.innerHeight);
     });
 
+  this.userInterface.renderUi();
      
   if (this.shouldUseFallBackSpriteRender){
       this.hand.renderFallbackHand();
@@ -64,12 +75,6 @@ export class GameRenderer {
     
     this.app.stage.addChild(this.handContainer);
     this.app.stage.addChild(this.tableContainer);
+    this.app.stage.addChild(this.userIntefaceContainer);
   }
-
-  refresh() {
-    this.table.refresh();
-    this.hand.refresh();
-  }
-
- 
 }
