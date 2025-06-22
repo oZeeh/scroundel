@@ -17,7 +17,7 @@ export class GameRenderer {
   userIntefaceContainer: PIXI.Container;
 
   table: tableRenderer;
-  hand: handRenderer;
+  handRenderer: handRenderer;
   deck: deckRenderer;
   userInterface: uiRenderer;
 
@@ -32,8 +32,8 @@ export class GameRenderer {
     this.userIntefaceContainer = new PIXI.Container();
 
     this.table = new tableRenderer(this.game, this.app, this.tableContainer)
-    this.hand = new handRenderer(this.game, this.app, this.handContainer)
-    this.deck = new deckRenderer(this.hand)
+    this.handRenderer = new handRenderer(this.game, this.app, this.handContainer)
+    this.deck = new deckRenderer(this.handRenderer)
     this.userInterface = new uiRenderer(this.game, this.app, this.userIntefaceContainer)
   }
 
@@ -65,11 +65,11 @@ export class GameRenderer {
   this.userInterface.renderUi();
      
   if (this.shouldUseFallBackSpriteRender){
-      this.hand.renderFallbackHand();
+      this.handRenderer.renderFallbackHand();
       this.deck.renderFallbackDeck();
       this.table.renderFallbackTable();
     } else {
-      this.hand.renderHand(); //Exemplo de renderização sem fallback
+      this.handRenderer.renderHand(); //Exemplo de renderização sem fallback
       this.deck.renderDeck();
     }
     

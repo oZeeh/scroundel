@@ -13,7 +13,7 @@ async function main() {
   const game = new Game();
   const renderer = new GameRenderer(game);
   await renderer.init();
-  const controller = new gameController(renderer);
+  new gameController(renderer);
 }
 
 bootstrapStyle();

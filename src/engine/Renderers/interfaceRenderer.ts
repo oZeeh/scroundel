@@ -16,6 +16,10 @@ export class uiRenderer {
     round: number = 0
     gold: number = 0
 
+    lifeText!: PIXI.Text;
+    roundText!: PIXI.Text;
+    goldText!: PIXI.Text;
+
     textStyle: uiStyleType = this.uiTextStyle();
 
     constructor(
@@ -28,30 +32,35 @@ export class uiRenderer {
         this.interfaceContainer = interfaceContainer
     }
 
+    public renderUi() {
+        const uiText = this.uiText();
+        this.lifeText = uiText.life;
+        this.roundText = uiText.round;
+        this.goldText = uiText.gold;
+
+        this.interfaceContainer.addChild(this.lifeText, this.roundText, this.goldText);
+    }
+
     public updateLife(newLife: number) {
-        this.interfaceContainer.removeChildren();
         this.life = newLife;
-        this.interfaceContainer.addChild(this.createLifeText());
+        if (this.lifeText) {
+            this.lifeText.text = this.life.toString();
+        }
 
     }
 
     public updateRound() {
-        this.interfaceContainer.removeChildren(this.round);
         this.round++;
-        this.interfaceContainer.addChild(this.createRoundText());
+        if (this.roundText) {
+            this.roundText.text = this.round.toString();
+        }
     }
 
-    public updateGold(gold: number) {
-        this.interfaceContainer.removeChildren();
-        this.gold = this.gold + gold
-        this.interfaceContainer.addChild(this.createGoldText());
-    }
-
-    public renderUi() {
-        const uiText = this.uiText();
-        this.interfaceContainer.addChild(uiText.life)
-        this.interfaceContainer.addChild(uiText.round)
-        this.interfaceContainer.addChild(uiText.gold)
+    public updateGold() {
+        this.gold++;
+        if (this.goldText) {
+            this.goldText.text = this.gold.toString();
+        }
     }
 
     private uiText() {
