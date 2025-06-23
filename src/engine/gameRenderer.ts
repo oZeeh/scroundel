@@ -11,7 +11,7 @@ export class GameRenderer {
   public deck: deckRenderer;
   public userInterface: uiRenderer;
 
-  private game: Game;
+  public game: Game;
 
   private app: PIXI.Application;
   private handContainer: PIXI.Container;

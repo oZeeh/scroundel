@@ -38,8 +38,20 @@ export class gameController {
 
         if (this.selectedPlayerCard.type == "health") 
         {
-            this.renderer.userInterface.updateLife(this.selectedPlayerCard.value)
+            if (this.game.getLife() < 10)
+            {
+                this.renderer.userInterface.updateLife(this.selectedPlayerCard.value - this.game.getLife())
+            }
+
             this.discardCard(this.selectedPlayerCard)
+        }
+
+        if (this.selectedPlayerCard.type == "shield") {
+            const shield = Math.round(this.selectedPlayerCard.value / 2)
+            this.renderer.userInterface.updateShield(shield)
+
+            this.discardCard(this.selectedPlayerCard)
+
         }
 
         if (this.selectedPlayerCard.type == "weapon" && this.selectedEnemyCard) {
@@ -56,7 +68,12 @@ export class gameController {
             }
             else {
                 this.discardCard(this.selectedPlayerCard)
-                this.renderer.userInterface.updateLife(this.selectedPlayerCard.value - this.selectedEnemyCard.value);
+                const valueToReduce = this.selectedPlayerCard.value - this.selectedEnemyCard.value
+                if (this.game.getShield()){
+                    this.renderer.userInterface.updateShield(valueToReduce)
+                } else {
+                    this.renderer.userInterface.updateLife(valueToReduce);
+                }
             }
 
             this.renderer.hand.refresh();
@@ -69,13 +86,11 @@ export class gameController {
         }
 
         if (this.game.isGameLost()) {
-            console.log("PERDEU")
             this.renderer.userInterface.showEndMessage("You Lose!", () => this.restartGame());
             return
         }
 
         if (this.game.isGameWon()) {
-            console.log("GANHOU")
             this.renderer.userInterface.showEndMessage("Venceu!", ()=> this.restartGame())
             return
         }
@@ -100,12 +115,6 @@ export class gameController {
     }
 
     private restartGame() {
-        this.game = new Game();
-        this.renderer.game = this.game;
-
-        this.renderer.table.refresh();
-        this.renderer.hand.refresh();
-        this.renderer.userInterface.clearEndMessage();
-
+        location.reload();
     }
 }

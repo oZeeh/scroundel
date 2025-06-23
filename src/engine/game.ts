@@ -5,13 +5,23 @@ export class Game {
   public hand: Card[] = [];
   public table: Card[] = [];
   public enemyQueue: Card[] = [];
-  private life: number  = 10
+
+  private life: number = 10
+  private shield: number = 0;
 
   constructor() {
     this.deck = this.createDeck();
     this.prepareEnemies();  
     this.drawCards(3);
     this.refillTable(); 
+  }
+
+  public getShield() {
+    return this.shield;
+  }
+
+  public setShield(newShield: number) {
+    this.shield += newShield;
   }
 
   public getLife() {
@@ -41,9 +51,9 @@ export class Game {
       }
     });
 
-    for (let i = 0; i < 4; i++) {
-      cards.push(new Card('gold', 0));
-    }
+    // for (let i = 0; i < 4; i++) {
+    //   cards.push(new Card('gold', 0));
+    // }
 
     return this.shuffle(cards);
   }

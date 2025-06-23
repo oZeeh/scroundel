@@ -6,6 +6,7 @@ type uiStyleType = {
     roundStyle: PIXI.TextStyle;
     goldStyle: PIXI.TextStyle;
     killedEnemiesStyle: PIXI.TextStyle;
+    shieldStyle: PIXI.TextStyle;
 }
 
 export class uiRenderer {
@@ -16,13 +17,16 @@ export class uiRenderer {
     private round: number = 0
     private gold: number = 0
     private killedEnemies: number = 0
+    private shield: number | null = null;
 
     private lifeText!: PIXI.Text;
     private roundText!: PIXI.Text;
     private goldText!: PIXI.Text;
     private killedEnemiesText!: PIXI.Text;
-    messageText: PIXI.Text | null = null;
-    restartButton: PIXI.Text | null = null;
+    private shieldText!: PIXI.Text;
+    
+    private messageText: PIXI.Text | null = null;
+    private restartButton: PIXI.Text | null = null;
 
     private textStyle: uiStyleType = this.uiTextStyle();
 
@@ -40,10 +44,11 @@ export class uiRenderer {
         const uiText = this.uiText();
         this.lifeText = uiText.life;
         this.roundText = uiText.round;
-        this.goldText = uiText.gold;
+        // this.goldText = uiText.gold;
         this.killedEnemiesText = uiText.enemiesKilled
+        this.shieldText = uiText.shield
 
-        this.interfaceContainer.addChild(this.lifeText, this.roundText, this.goldText, this.killedEnemiesText);
+        this.interfaceContainer.addChild(this.lifeText, this.roundText, /*this.goldText,*/ this.killedEnemiesText, this.shieldText);
     }
 
     public updateLife(newLife: number) {
@@ -51,7 +56,6 @@ export class uiRenderer {
         if (this.lifeText) {
             this.lifeText.text = this.game.getLife();
         }
-
     }
 
     public updateRound() {
@@ -75,18 +79,26 @@ export class uiRenderer {
         }
     }
 
+    public updateShield(newShield: number) {
+        this.game.setShield(newShield)
+        if (this.shieldText) {
+            this.shieldText.text = this.game.getShield();
+        }
+    }
+
     private uiText() {
         const life = this.createLifeText()
         const round = this.createRoundText()
         const gold = this.createGoldText()
         const enemiesKilled = this.createEnemiesKilledText();
+        const shield = this.createShieldText();
       
-        return { life, round, gold, enemiesKilled } 
+        return { life, round, gold, enemiesKilled, shield } 
     }
 
     private createLifeText() {
         const life = new PIXI.Text({
-            text: this.game.getLife(),
+            text: `Vida: ${this.game.getLife()}`,
             style: this.textStyle.lifeStyle,
         });
 
@@ -98,12 +110,12 @@ export class uiRenderer {
 
     private createGoldText() {
         const gold = new PIXI.Text({
-            text: this.gold,
+            text: `Dinheiro ${this.gold}`,
             style: this.textStyle.goldStyle,
         });
 
         gold.x = this.app.renderer.width - gold.width - 10;
-        gold.y = 200;
+        gold.y = 100;
 
         return gold;
     }
@@ -158,7 +170,7 @@ export class uiRenderer {
 
     private createRoundText() {
         const round = new PIXI.Text({
-            text: this.round,
+            text: `Turno: ${this.round}`,
             style: this.textStyle.roundStyle,
         });
 
@@ -170,14 +182,26 @@ export class uiRenderer {
 
     private createEnemiesKilledText() {
         const killedEnemies = new PIXI.Text({
-            text: this.killedEnemies,
+            text: `Abates: ${this.killedEnemies}`,
             style: this.textStyle.killedEnemiesStyle
         })
 
         killedEnemies.x = this.app.renderer.width - killedEnemies.width - 10;
-        killedEnemies.y = 300;
+        killedEnemies.y = 200;
 
         return killedEnemies
+    }
+
+    private createShieldText() {
+        const shield = new PIXI.Text({
+            text: `Escudo: ${this.game.getShield()}`,
+            style: this.textStyle.shieldStyle
+        })
+
+        shield.x = this.app.renderer.width - shield.width - 10;
+        shield.y = 300;
+
+        return shield
     }
 
     private uiTextStyle() {
@@ -205,6 +229,12 @@ export class uiRenderer {
             fill: '#FAFDF6'
         })
 
-        return { lifeStyle, roundStyle, goldStyle, killedEnemiesStyle }
+        const shieldStyle = new PIXI.TextStyle({
+            fontFamily: 'Noto Emoji, DejaVu Sans, sans-serif',
+            fontSize: 64,
+            fill: '#C7D66D'
+        })
+
+        return { lifeStyle, roundStyle, goldStyle, killedEnemiesStyle, shieldStyle }
     }
 }
