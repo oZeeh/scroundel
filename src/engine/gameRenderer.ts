@@ -6,18 +6,19 @@ import { deckRenderer } from './Renderers/deckRenderer';
 import { uiRenderer } from './Renderers/interfaceRenderer';
 
 export class GameRenderer {
-  game: Game;
+  public table: tableRenderer;
+  public hand: handRenderer;
+  public deck: deckRenderer;
+  public userInterface: uiRenderer;
+
+  private game: Game;
 
   private app: PIXI.Application;
   private handContainer: PIXI.Container;
   private tableContainer: PIXI.Container;
   private userIntefaceContainer: PIXI.Container;
-  private shouldUseFallBackSpriteRender: boolean = false;
 
-  public table: tableRenderer;
-  public hand: handRenderer;
-  public deck: deckRenderer;
-  public userInterface: uiRenderer;
+  private shouldUseFallBackSpriteRender: boolean = false;
 
   constructor(game: Game) {
     this.game = game;
@@ -37,7 +38,7 @@ export class GameRenderer {
     await this.app.init({
       width: window.innerWidth,
       height: window.innerHeight,
-      backgroundColor: 0x1099bb, //trocar ASAP
+      backgroundColor: '#426A5A',
       antialias: true,
       resolution: 1,
     });
