@@ -64,8 +64,10 @@ export class tableRenderer {
     private handleTableEvents(card: Card, cardText: Text) {
         cardText.eventMode = 'static';
         cardText.cursor = 'pointer';
+        const initialY = this.app.renderer.height / 2;
 
         cardText.on('pointerdown', () => {
+            cardText.y = initialY - 30;
             this.onCardSelected!(card)
         })
     }

@@ -73,13 +73,13 @@ export class handRenderer {
         this.handContainer.removeChildren();
 
         this.game.hand.forEach((card, index) => {
-            const cardText = this.createCardSpriteFallback(card, index);
-            this.handleCardEvents(card, cardText, index); // Posiciona e configura antes
-            this.handContainer.addChild(cardText);        // Só adiciona depois
+            const cardText = this.createCardSpriteFallback(card);
+            this.handleCardEvents(card, cardText, index); 
+            this.handContainer.addChild(cardText);        
         });
     }
 
-    private createCardSpriteFallback(card: Card, index: number): Text {
+    private createCardSpriteFallback(card: Card): Text {
         const symbol = getCardSymbol(card);
         
         const cardTextStyle = new PIXI.TextStyle({
@@ -104,6 +104,7 @@ export class handRenderer {
         const handWidth = this.game.hand.length * 70;
         const initialX = (this.app.renderer.width - handWidth) / 2;
         const initialY = this.app.renderer.height / 2 + 150;
+        let isSelected = false;
 
         cardText.x = initialX + index * 70;
         cardText.y = initialY;
@@ -116,14 +117,17 @@ export class handRenderer {
         });
 
         cardText.on('pointerout', () => {
-            cardText.y = initialY;
+            if (!isSelected) {
+                cardText.y = initialY;
+            }
         });
 
         cardText.on('pointerdown', () => {
+            isSelected = !isSelected
+            cardText.y = initialY - 20;
             if (this.onCardSelected) {
                 this.onCardSelected(card);
             }
         })
     }
-    
 }

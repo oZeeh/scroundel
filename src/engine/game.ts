@@ -5,6 +5,7 @@ export class Game {
   public hand: Card[] = [];
   public table: Card[] = [];
   public enemyQueue: Card[] = [];
+  private life: number  = 10
 
   constructor() {
     this.deck = this.createDeck();
@@ -13,15 +14,31 @@ export class Game {
     this.refillTable(); 
   }
 
+  public getLife() {
+    return this.life
+  }
+
+  public setLife(newLife: number) {
+    this.life += newLife
+  }
+
+  public isGameWon() {
+    return this.table.length + this.enemyQueue.length <= 0
+  }
+
+  public isGameLost() {
+    return this.life <= 0;
+  }
+
   private createDeck(): Card[] {
   const cards: Card[] = [];
   const types: CardType[] = ['enemy', 'health', 'weapon', 'shield'];
-
+  
   // Para cada tipo, cria 13 cartas com valores de 1 a 13
   types.forEach(type => {
     for (let value = 1; value <= 13; value++) {
-      cards.push(new Card(type, value));
-    }
+        cards.push(new Card(type, value));
+      }
     });
 
     for (let i = 0; i < 4; i++) {
@@ -45,16 +62,11 @@ export class Game {
 
   public refillTable() {
     while (this.table.length < 3 && this.enemyQueue.length > 0) {
-      const nextEnemy = this.enemyQueue.shift(); // pega o próximo da fila
+      const nextEnemy = this.enemyQueue.shift();
       if (nextEnemy) {
         this.table.push(nextEnemy);
       }
     }
-  }
-
-  public killEnemy(index: number) {
-    this.table.splice(index, 1); 
-    this.refillTable();         
   }
 
   private prepareEnemies() {
@@ -80,4 +92,12 @@ export class Game {
         this.hand.splice(index, 1);
     }
   }
+
+  public playCardFromTable(card: Card) {
+    const index = this.table.indexOf(card);
+    if (index !== -1) {
+        this.table.splice(index, 1);
+    }
+  }
+
 }
